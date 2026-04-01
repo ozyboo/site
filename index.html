@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Охрана труда — ot-soft.ru</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+      background: #f2f2f7;
+      color: #1c1c1e;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== CSS VARIABLES (MAX UI Design Tokens) ===== */
+    :root {
+      --color-bg-primary: #ffffff;
+      --color-bg-secondary: #f2f2f7;
+      --color-bg-card: #ffffff;
+      --color-accent: #007aff;
+      --color-accent-hover: #0062cc;
+      --color-green: #34c759;
+      --color-red: #ff3b30;
+      --color-purple: #af52de;
+      --color-orange: #ff9500;
+      --color-text-primary: #1c1c1e;
+      --color-text-secondary: #8e8e93;
+      --color-separator: #e5e5ea;
+      --color-badge-primary-bg: #007aff;
+      --color-badge-primary-text: #ffffff;
+      --color-badge-secondary-bg: #e5e5ea;
+      --color-badge-secondary-text: #1c1c1e;
+      --color-badge-accent-bg: #ff9500;
+      --color-badge-accent-text: #ffffff;
+      --color-badge-green-bg: #34c759;
+      --color-badge-green-text: #ffffff;
+      --shadow-card: 0 2px 12px rgba(0,0,0,0.07);
+      --radius-card: 16px;
+      --radius-btn: 12px;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--color-bg-secondary);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--color-bg-primary);
+      padding: 16px 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 var(--color-separator);
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+    }
+    .header-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #007aff, #5856d6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .header-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .header-info {}
+    .header-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      line-height: 1.2;
+    }
+    .header-subtitle {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ===== TAB BAR ===== */
+    .tab-bar {
+      display: flex;
+      gap: 6px;
+      padding: 0 0 12px 0;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 9px 6px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--color-bg-secondary);
+      color: var(--color-text-secondary);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      line-height: 1;
+    }
+    .tab-btn:active { transform: scale(0.97); }
+    .tab-btn.active {
+      background: var(--color-accent);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+    }
+    .tab-icon { font-size: 14px; }
+
+    /* ===== CONTENT ===== */
+    .content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .section { display: none; flex-direction: column; gap: 12px; }
+    .section.active { display: flex; }
+
+    /* ===== SECTION HEADER ===== */
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      margin-top: -4px;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: var(--color-bg-card);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+    .card-emoji { font-size: 22px; }
+
+    /* ===== BADGE ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-primary { background: var(--color-badge-primary-bg); color: var(--color-badge-primary-text); }
+    .badge-secondary { background: var(--color-badge-secondary-bg); color: var(--color-badge-secondary-text); }
+    .badge-accent { background: var(--color-badge-accent-bg); color: var(--color-badge-accent-text); }
+    .badge-green { background: var(--color-badge-green-bg); color: var(--color-badge-green-text); }
+    .badge-purple { background: var(--color-purple); color: #fff; }
+
+    /* ===== SEPARATOR ===== */
+    .sep {
+      height: 1px;
+      background: var(--color-separator);
+      margin: 12px 0;
+    }
+
+    /* ===== PRODUCT CARD ===== */
+    .product-desc {
+      font-size: 14px;
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .product-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .meta-item {}
+    .meta-label {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    .meta-value {
+      font-size: 13px;
+      color: var(--color-text-primary);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ===== MODULES LIST ===== */
+    .modules-title {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .modules-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .module-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      background: var(--color-bg-secondary);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--color-text-primary);
+      font-weight: 500;
+      gap: 4px;
+    }
+
+    /* ===== TARIFF CARD ===== */
+    .tariff-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tariff-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+    .tariff-desc {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+    .tariff-for {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tariff-for-label {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    /* ===== RATES TABLE ===== */
+    .rates-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .rate-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+    .rate-role {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      font-weight: 500;
+    }
+    .rate-note {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+    .rate-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+
+    /* ===== CONTACT CARD ===== */
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+    }
+    .contact-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .contact-icon-wrap.blue { background: rgba(0,122,255,0.12); }
+    .contact-icon-wrap.green { background: rgba(52,199,89,0.12); }
+    .contact-icon-wrap.orange { background: rgba(255,149,0,0.12); }
+    .contact-icon-wrap.purple { background: rgba(175,82,222,0.12); }
+    .contact-label {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-bottom: 2px;
+    }
+    .contact-value {
+      font-size: 15px;
+      color: var(--color-text-primary);
+      font-weight: 500;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: var(--radius-btn);
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.18s ease;
+      width: 100%;
+      line-height: 1;
+    }
+    .btn:active { transform: scale(0.98); opacity: 0.85; }
+    .btn-primary {
+      background: var(--color-accent);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35);
+    }
+    .btn-primary:hover { background: var(--color-accent-hover); }
+    .btn-secondary {
+      background: var(--color-bg-card);
+      color: var(--color-accent);
+      box-shadow: var(--shadow-card);
+    }
+    .btn-secondary:hover { background: #f5f5f5; }
+    .btn-green {
+      background: var(--color-green);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(52,199,89,0.3);
+    }
+
+    /* ===== INFO BANNER ===== */
+    .info-banner {
+      background: rgba(0,122,255,0.08);
+      border: 1.5px solid rgba(0,122,255,0.18);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .info-banner-icon { font-size: 18px; flex-shrink: 0; }
+    .info-banner-text {
+      font-size: 13px;
+      color: var(--color-text-primary);
+      line-height: 1.5;
+    }
+    .info-banner-text strong { color: var(--color-accent); }
+
+    /* ===== PRICING HIGHLIGHT ===== */
+    .price-note {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      text-align: center;
+      padding: 8px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 16px;
+      text-align: center;
+      color: var(--color-text-secondary);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* ===== VERSION COMPARISON TABLE ===== */
+    .compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 9px 10px;
+      text-align: center;
+      border-bottom: 1px solid var(--color-separator);
+    }
+    .compare-table th {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--color-text-primary);
+      background: var(--color-bg-secondary);
+    }
+    .compare-table th:first-child, .compare-table td:first-child {
+      text-align: left;
+      color: var(--color-text-primary);
+      font-weight: 500;
+    }
+    .compare-table td { color: var(--color-text-secondary); }
+    .check { color: var(--color-green); font-size: 15px; }
+    .cross { color: var(--color-separator); font-size: 15px; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .section.active { animation: fadeIn 0.25s ease; }
+
+    /* ===== DARK MODE ===== */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg-primary: #1c1c1e;
+        --color-bg-secondary: #000000;
+        --color-bg-card: #2c2c2e;
+        --color-text-primary: #ffffff;
+        --color-text-secondary: #8e8e93;
+        --color-separator: #38383a;
+        --color-badge-secondary-bg: #3a3a3c;
+        --color-badge-secondary-text: #ffffff;
+        --shadow-card: 0 2px 12px rgba(0,0,0,0.4);
+      }
+      .tab-btn { background: #2c2c2e; color: #8e8e93; }
+      .module-chip { background: #3a3a3c; }
+      .btn-secondary { background: #2c2c2e; }
+      .compare-table th { background: #3a3a3c; }
+      body { background: #000000; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-top">
+      <div class="header-avatar">
+        <img
+          src="https://www.ot-soft.ru/favicon.ico"
+          alt="OT-Soft"
+          onerror="this.style.display='none'; this.parentElement.textContent='🛡️'"
+        />
+      </div>
+      <div class="header-info">
+        <div class="header-title">Охрана труда</div>
+        <div class="header-subtitle">Программы для 1С:Предприятия 8 · ot-soft.ru</div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('products', this)">
+        <span class="tab-icon">📦</span> Продукты
+      </button>
+      <button class="tab-btn" onclick="switchTab('compare', this)">
+        <span class="tab-icon">📊</span> Сравнение
+      </button>
+      <button class="tab-btn" onclick="switchTab('support', this)">
+        <span class="tab-icon">🛠️</span> Тарифы
+      </button>
+      <button class="tab-btn" onclick="switchTab('contacts', this)">
+        <span class="tab-icon">📞</span> Контакты
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== CONTENT ===== -->
+  <main class="content">
+
+    <!-- =========================================== -->
+    <!-- TAB: PRODUCTS                               -->
+    <!-- =========================================== -->
+    <section id="tab-products" class="section active">
+
+      <div class="section-title">📦 Линейка продуктов</div>
+      <p class="section-subtitle">
+        Выберите подходящую версию программы «Охрана труда» для 1С:Предприятия 8 в зависимости от размера и потребностей вашей организации.
+      </p>
+
+      <!-- СТАНДАРТ -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-emoji">🟢</span>
+            <span class="card-title">СТАНДАРТ</span>
+          </div>
+          <span class="badge badge-secondary">Старт</span>
+        </div>
+        <p class="product-desc">
+          Базовая версия для небольших организаций. Включает ключевые подсистемы охраны труда: управление инструктажами, нормативной документацией и специальной оценкой условий труда.
+        </p>
+        <div class="sep"></div>
+        <div class="modules-title">Основные модули</div>
+        <div class="modules-grid">
+          <span class="module-chip">📋 Инструктажи</span>
+          <span class="module-chip">📄 СОУТ</span>
+          <span class="module-chip">👷 СИЗ</span>
+          <span class="module-chip">📅 Обучение</span>
+          <span class="module-chip">📌 Нормативы</span>
+        </div>
+        <div class="sep"></div>
+        <div class="product-meta">
+          <div class="meta-item">
+            <div class="meta-label">Аудитория</div>
+            <div class="meta-value">Малый и средний бизнес</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Лицензия</div>
+            <div class="meta-value">✅ Бессрочная</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ПРОФ -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-emoji">🔵</span>
+            <span class="card-title">ПРОФ</span>
+          </div>
+          <span class="badge badge-primary">Популярный</span>
+        </div>
+        <p class="product-desc">
+          Расширенная версия с дополнительными подсистемами. Включает все возможности СТАНДАРТ, а также управление несчастными случаями, медосмотрами и промышленной безопасностью.
+        </p>
+        <div class="sep"></div>
+        <div class="modules-title">Основные модули</div>
+        <div class="modules-grid">
+          <span class="module-chip">📋 Инструктажи</span>
+          <span class="module-chip">📄 СОУТ</span>
+          <span class="module-chip">👷 СИЗ</span>
+          <span class="module-chip">📅 Обучение</span>
+          <span class="module-chip">🏥 Медосмотры</span>
+          <span class="module-chip">⚠️ Несчастные случаи</span>
+          <span class="module-chip">🏭 Пром. безопасность</span>
+        </div>
+        <div class="sep"></div>
+        <div class="product-meta">
+          <div class="meta-item">
+            <div class="meta-label">Аудитория</div>
+            <div class="meta-value">Средние предприятия</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Лицензия</div>
+            <div class="meta-value">✅ Бессрочная</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- КОРП -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-emoji">🟣</span>
+            <span class="card-title">КОРП</span>
+          </div>
+          <span class="badge badge-purple">Корпоративный</span>
+        </div>
+        <p class="product-desc">
+          Корпоративная версия со всеми подсистемами охраны труда, промышленной и пожарной безопасности. Поддерживает учёт по нескольким юридическим лицам и обособленным подразделениям.
+        </p>
+        <div class="sep"></div>
+        <div class="modules-title">Основные модули</div>
+        <div class="modules-grid">
+          <span class="module-chip">📋 Инструктажи</span>
+          <span class="module-chip">📄 СОУТ</span>
+          <span class="module-chip">👷 СИЗ</span>
+          <span class="module-chip">📅 Обучение</span>
+          <span class="module-chip">🏥 Медосмотры</span>
+          <span class="module-chip">⚠️ Несчастные случаи</span>
+          <span class="module-chip">🏭 Пром. безопасность</span>
+          <span class="module-chip">🔥 Пожарная безопасность</span>
+          <span class="module-chip">🏢 Несколько юр. лиц</span>
+        </div>
+        <div class="sep"></div>
+        <div class="product-meta">
+          <div class="meta-item">
+            <div class="meta-label">Аудитория</div>
+            <div class="meta-value">Крупные организации с несколькими юр. лицами</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Лицензия</div>
+            <div class="meta-value">✅ Бессрочная</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- СБОТ -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-emoji">🔴</span>
+            <span class="card-title">СБОТ</span>
+          </div>
+          <span class="badge badge-accent">Максимальный</span>
+        </div>
+        <p class="product-desc">
+          Самая полная версия линейки. Охватывает все направления: охрану труда, промышленную, пожарную и экологическую безопасность. Предназначена для холдингов с разветвлённой структурой подразделений.
+        </p>
+        <div class="sep"></div>
+        <div class="modules-title">Основные модули</div>
+        <div class="modules-grid">
+          <span class="module-chip">📋 Инструктажи</span>
+          <span class="module-chip">📄 СОУТ</span>
+          <span class="module-chip">👷 СИЗ</span>
+          <span class="module-chip">📅 Обучение</span>
+          <span class="module-chip">🏥 Медосмотры</span>
+          <span class="module-chip">⚠️ Несчастные случаи</span>
+          <span class="module-chip">🏭 Пром. безопасность</span>
+          <span class="module-chip">🔥 Пожарная безопасность</span>
+          <span class="module-chip">🌿 Экол. безопасность</span>
+          <span class="module-chip">🏢 Несколько юр. лиц</span>
+          <span class="module-chip">🗂️ Холдинговая структура</span>
+        </div>
+        <div class="sep"></div>
+        <div class="product-meta">
+          <div class="meta-item">
+            <div class="meta-label">Аудитория</div>
+            <div class="meta-value">Холдинги, крупные предприятия всех отраслей</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Лицензия</div>
+            <div class="meta-value">✅ Бессрочная</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-banner">
+        <span class="info-banner-icon">💡</span>
+        <div class="info-banner-text">
+          Все версии работают на платформе <strong>1С:Предприятие 8</strong>. Лицензия бессрочная, дополнительно приобретается платное сопровождение.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================== -->
+    <!-- TAB: COMPARE                                -->
+    <!-- =========================================== -->
+    <section id="tab-compare" class="section">
+
+      <div class="section-title">📊 Сравнение версий</div>
+      <p class="section-subtitle">Сравните доступные подсистемы в каждой версии программы.</p>
+
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="compare-scroll">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Подсистема</th>
+                <th>СТД</th>
+                <th>ПРОФ</th>
+                <th>КОРП</th>
+                <th>СБОТ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Инструктажи по ОТ</td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>СОУТ / АРМ</td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Обучение и проверка знаний</td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Управление СИЗ</td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Медицинские осмотры</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Несчастные случаи</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Промышленная безопасность</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Пожарная безопасность</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Несколько юр. лиц</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Экологическая безопасность</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="cross">—</span></td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+              <tr>
+                <td>Холдинговая структура</td>
+                <td><span class="cross">—</span></td>
+                <td><span class="cross">—</span></td>
+                <td><span class="cross">—</span></td>
+                <td><span class="check">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-banner">
+        <span class="info-banner-icon">📌</span>
+        <div class="info-banner-text">
+          <strong>СТД</strong> — СТАНДАРТ &nbsp;|&nbsp; <strong>ПРОФ</strong> — Профессиональный &nbsp;|&nbsp; <strong>КОРП</strong> — Корпоративный &nbsp;|&nbsp; <strong>СБОТ</strong> — Максимальный
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================== -->
+    <!-- TAB: SUPPORT                                -->
+    <!-- =========================================== -->
+    <section id="tab-support" class="section">
+
+      <div class="section-title">🛠️ Тарифы сопровождения</div>
+      <p class="section-subtitle">Актуальные тарифы и стоимость дополнительных работ.</p>
+
+      <div class="info-banner" style="background:rgba(255,149,0,0.08); border-color:rgba(255,149,0,0.25);">
+        <span class="info-banner-icon">📅</span>
+        <div class="info-banner-text">
+          Цены действуют с <strong style="color:var(--color-orange)">01.01.2026 г.</strong> Стоимость указана с учётом НДС.
+        </div>
+      </div>
+
+      <!-- Тариф Базовый -->
+      <div class="card">
+        <div class="tariff-header">
+          <div>
+            <div class="tariff-name">📗 Базовый</div>
+          </div>
+          <span class="badge badge-secondary">СТАНДАРТ / ПРОФ</span>
+        </div>
+        <p class="tariff-desc">
+          Стандартный пакет сопровождения для малых и средних организаций. Обновления конфигурации, консультации по работе с программой в рамках лимита часов.
+        </p>
+        <div class="sep"></div>
+        <div class="tariff-for">
+          <span class="tariff-for-label">📌 Для продуктов:</span>
+          <span class="badge badge-primary" style="font-size:11px;">СТАНДАРТ</span>
+          <span class="badge badge-primary" style="font-size:11px;">ПРОФ</span>
+        </div>
+      </div>
+
+      <!-- Тариф КОРП -->
+      <div class="card">
+        <div class="tariff-header">
+          <div>
+            <div class="tariff-name">📘 КОРП</div>
+          </div>
+          <span class="badge badge-purple">КОРП / СБОТ</span>
+        </div>
+        <p class="tariff-desc">
+          Тариф для крупных организаций. Стоимость зависит от длительности и объёма клиентских лицензий. Включает приоритетную поддержку и расширенный лимит часов.
+        </p>
+        <div class="sep"></div>
+        <div class="tariff-for">
+          <span class="tariff-for-label">📌 Для продуктов:</span>
+          <span class="badge badge-purple" style="font-size:11px;">КОРП</span>
+          <span class="badge badge-accent" style="font-size:11px;">СБОТ</span>
+        </div>
+      </div>
+
+      <!-- Тариф СБОТ-КОРП -->
+      <div class="card">
+        <div class="tariff-header">
+          <div>
+            <div class="tariff-name">📕 СБОТ-КОРП</div>
+          </div>
+          <span class="badge badge-accent">СБОТ</span>
+        </div>
+        <p class="tariff-desc">
+          Для организаций со сложной структурой: обособленные подразделения, филиалы, холдинговая структура. Требуется от 100 именных пользователей.
+        </p>
+        <div class="sep"></div>
+        <div class="tariff-for">
+          <span class="tariff-for-label">📌 Для продуктов:</span>
+          <span class="badge badge-accent" style="font-size:11px;">СБОТ</span>
+        </div>
+      </div>
+
+      <!-- Почасовые ставки -->
+      <div class="rates-title">💰 Стоимость доп. работ</div>
+      <p class="section-subtitle" style="margin-top: 4px;">Дополнительные часы сверх лимита тарифа.</p>
+
+      <div class="card" style="padding: 16px 16px 4px;">
+        <div class="rate-row">
+          <div>
+            <div class="rate-role">Консультант</div>
+            <div class="rate-note">с учётом НДС</div>
+          </div>
+          <div class="rate-price">4 000 ₽/час</div>
+        </div>
+        <div class="sep" style="margin: 0;"></div>
+        <div class="rate-row">
+          <div>
+            <div class="rate-role">Специалист</div>
+            <div class="rate-note">с учётом НДС</div>
+          </div>
+          <div class="rate-price">4 000 ₽/час</div>
+        </div>
+        <div class="sep" style="margin: 0;"></div>
+        <div class="rate-row">
+          <div>
+            <div class="rate-role">Программист</div>
+            <div class="rate-note">с учётом НДС</div>
+          </div>
+          <div class="rate-price">4 200 ₽/час</div>
+        </div>
+        <div class="sep" style="margin: 0;"></div>
+        <div class="rate-row">
+          <div>
+            <div class="rate-role">Доп. участник онлайн-обучения</div>
+            <div class="rate-note">с учётом НДС · за одного участника</div>
+          </div>
+          <div class="rate-price">4 000 ₽</div>
+        </div>
+      </div>
+
+      <p class="price-note">* Стоимость тарифов уточняйте у менеджеров</p>
+
+    </section>
+
+    <!-- =========================================== -->
+    <!-- TAB: CONTACTS                               -->
+    <!-- =========================================== -->
+    <section id="tab-contacts" class="section">
+
+      <div class="section-title">📞 Контакты</div>
+      <p class="section-subtitle">Свяжитесь с нами или запустите демо-версию прямо сейчас.</p>
+
+      <!-- Контактная карточка -->
+      <div class="card" style="padding: 16px 16px 4px;">
+        <div class="contact-row">
+          <div class="contact-icon-wrap blue">🌐</div>
+          <div>
+            <div class="contact-label">Сайт</div>
+            <div class="contact-value">www.ot-soft.ru</div>
+          </div>
+        </div>
+        <div class="sep" style="margin: 0;"></div>
+        <div class="contact-row">
+          <div class="contact-icon-wrap green">📧</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">info@ot-soft.ru</div>
+          </div>
+        </div>
+        <div class="sep" style="margin: 0;"></div>
+        <div class="contact-row">
+          <div class="contact-icon-wrap orange">🏢</div>
+          <div>
+            <div class="contact-label">Разработчик</div>
+            <div class="contact-value">«Информ Центр»</div>
+          </div>
+        </div>
+        <div class="sep" style="margin: 0;"></div>
+        <div class="contact-row">
+          <div class="contact-icon-wrap purple">📅</div>
+          <div>
+            <div class="contact-label">На рынке с</div>
+            <div class="contact-value">2012 года</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Кнопки действий -->
+      <div class="btn-group">
+        <a
+          href="https://www.ot-soft.ru/buy/access-demo-server"
+          target="_blank"
+          class="btn btn-green"
+        >
+          🖥️ Запустить демо-сервер
+        </a>
+        <a
+          href="https://www.ot-soft.ru/buy/buy"
+          target="_blank"
+          class="btn btn-primary"
+        >
+          🛒 Купить / оставить заявку
+        </a>
+        <a
+          href="https://www.ot-soft.ru/buy/compare-versions"
+          target="_blank"
+          class="btn btn-secondary"
+        >
+          📊 Подробное сравнение версий
+        </a>
+        <a
+          href="https://www.ot-soft.ru"
+          target="_blank"
+          class="btn btn-secondary"
+        >
+          🔗 Перейти на сайт
+        </a>
+      </div>
+
+      <div class="info-banner">
+        <span class="info-banner-icon">🎯</span>
+        <div class="info-banner-text">
+          Не знаете, какая версия подойдёт? Оставьте заявку — <strong>менеджеры помогут с выбором</strong> бесплатно.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    © «Информ Центр» 2012–2026 &nbsp;·&nbsp; ot-soft.ru<br/>
+    Программы «Охрана труда» для 1С:Предприятия 8
+  </footer>
+
+</div>
+
+<!-- ===== JS ===== -->
+<script>
+  function switchTab(tabId, btnEl) {
+    // Скрываем все секции
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    // Убираем active у всех кнопок
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    // Показываем нужную секцию
+    document.getElementById('tab-' + tabId).classList.add('active');
+    // Делаем кнопку активной
+    btnEl.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
